@@ -1,0 +1,306 @@
+CREATE SCHEMA IF NOT EXISTS `Proyecto` DEFAULT CHARACTER SET utf8 ;
+
+USE `Proyecto` ;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`R_huella` (
+  
+`idHuella` INT(30) NOT NULL,
+  
+PRIMARY KEY (`idHuella`))
+
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`R_Propietario` (
+  
+`IDP` INT(10) NOT NULL,
+  
+`Nombre` TEXT(20) NULL,
+  
+`Direccion` VARCHAR(10) NULL,
+  
+`Placa` VARCHAR(10) NULL,
+  
+PRIMARY KEY (`IDP`))
+
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`Propietario` (
+  
+`Codigo_P` INT(20) NOT NULL,
+  
+`N_parqueadero` VARCHAR(45) NULL,
+  
+`Nombre` TEXT(20) NULL,
+`Apellido` TEXT(20) NULL,
+  
+`R_Propietario_IDP` INT(10) NOT NULL,
+  
+`R_huella_idHuella` INT(30) NOT NULL,
+PRIMARY KEY (`Codigo_P`, `R_Propietario_IDP`, `R_huella_idHuella`),
+  
+INDEX `fk_Propietario_R_Propietario1_idx` (`R_Propietario_IDP` ASC),
+  
+INDEX `fk_Propietario_R_huella1_idx` (`R_huella_idHuella` ASC),
+CONSTRAINT `fk_Propietario_R_Propietario1`
+    
+FOREIGN KEY (`R_Propietario_IDP`)
+    
+REFERENCES `Proyecto`.`R_Propietario` (`IDP`)
+ON DELETE NO ACTION
+    
+ON UPDATE NO ACTION,
+  
+CONSTRAINT `fk_Propietario_R_huella1`
+FOREIGN KEY (`R_huella_idHuella`)
+    
+REFERENCES `Proyecto`.`R_huella` (`idHuella`)
+    
+ON DELETE NO ACTION
+    
+ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`Tarjeta` (
+  
+`idTarjeta` INT(10) NOT NULL,
+  
+`Serial` VARCHAR(20) NULL,
+  
+PRIMARY KEY (`idTarjeta`))
+
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`Visitantes` (
+  
+`ID` INT(10) NOT NULL,
+  
+`Nombre` TEXT(20) NULL,
+  
+`Apellido` TEXT(20) NULL,
+`Direccion` VARCHAR(10) NULL,
+  
+`Placa` VARCHAR(10) NULL,
+  
+`Tarjeta_idTarjeta` INT(10) NOT NULL,
+PRIMARY KEY (`ID`, `Tarjeta_idTarjeta`),
+  
+INDEX `fk_Visitantes_Tarjeta1_idx` (`Tarjeta_idTarjeta` ASC),
+  
+CONSTRAINT `fk_Visitantes_Tarjeta1`
+FOREIGN KEY (`Tarjeta_idTarjeta`)
+    
+REFERENCES `Proyecto`.`Tarjeta` (`idTarjeta`)
+    
+ON DELETE NO ACTION
+ON UPDATE NO ACTION)
+
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`Roles` (
+  
+`Administrador` CHAR(10) NOT NULL,
+  
+`J_Guarda` TEXT(20) NULL,
+  
+`Guarda_T` TEXT(20) NULL,
+`Visitantes_ID` INT(10) NOT NULL,
+  
+`Visitantes_Tarjeta_idTarjeta` INT(10) NOT NULL,
+  
+`R_Propietario_IDP` INT(10) NOT NULL,
+PRIMARY KEY (`Administrador`, `Visitantes_ID`, `Visitantes_Tarjeta_idTarjeta`, `R_Propietario_IDP`),
+  
+INDEX `fk_Roles_Visitantes1_idx` (`Visitantes_ID` ASC, `Visitantes_Tarjeta_idTarjeta` ASC),
+  
+INDEX `fk_Roles_R_Propietario1_idx` (`R_Propietario_IDP` ASC),
+CONSTRAINT `fk_Roles_Visitantes1`
+    
+FOREIGN KEY (`Visitantes_ID` , `Visitantes_Tarjeta_idTarjeta`)
+    
+REFERENCES `Proyecto`.`Visitantes` (`ID` , `Tarjeta_idTarjeta`)
+ON DELETE NO ACTION
+    
+ON UPDATE NO ACTION,
+  
+CONSTRAINT `fk_Roles_R_Propietario1`
+FOREIGN KEY (`R_Propietario_IDP`)
+    
+REFERENCES `Proyecto`.`R_Propietario` (`IDP`)
+    
+ON DELETE NO ACTION
+ON UPDATE NO ACTION)
+
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`ActivacionT` (
+  
+`Codigo_Act` INT(20) NOT NULL,
+  
+`N_Act` VARCHAR(30) NULL,
+  
+PRIMARY KEY (`Codigo_Act`))
+
+ENGINE = InnoDB
+
+DEFAULT CHARACTER SET = tis620;
+
+CREATE TABLE IF NOT EXISTS `Proyecto`.`Tarjeta_has_ActivacionT` (
+  
+`Tarjeta_idTarjeta` INT(10) NOT NULL,
+  
+`ActivacionT_Codigo_Act` INT(20) NOT NULL,
+PRIMARY KEY (`Tarjeta_idTarjeta`, `ActivacionT_Codigo_Act`),
+  
+INDEX `fk_Tarjeta_has_ActivacionT_ActivacionT1_idx` (`ActivacionT_Codigo_Act` ASC),
+  
+INDEX `fk_Tarjeta_has_ActivacionT_Tarjeta1_idx` (`Tarjeta_idTarjeta` ASC),
+  
+CONSTRAINT `fk_Tarjeta_has_ActivacionT_Tarjeta1`
+FOREIGN KEY (`Tarjeta_idTarjeta`)
+    
+REFERENCES `Proyecto`.`Tarjeta` (`idTarjeta`)
+    
+ON DELETE NO ACTION
+    
+ON UPDATE NO ACTION,
+CONSTRAINT `fk_Tarjeta_has_ActivacionT_ActivacionT1`
+    
+FOREIGN KEY (`ActivacionT_Codigo_Act`)
+    
+REFERENCES `Proyecto`.`ActivacionT` (`Codigo_Act`)
+    
+ON DELETE NO ACTION
+    
+ON UPDATE NO ACTION)
+
+ENGINE = InnoDB;
+
+insert into R_huella (idHuella)
+values (3214);
+
+insert into R_huella (idHuella)
+values (4321);
+
+insert into R_huella (idHuella)
+values (3545);
+
+insert into R_huella (idHuella)
+values (5546);
+
+insert into R_huella (idHuella)
+values (5978);
+
+insert into R_Propietario (IDP,Nombre,Direccion,Placa)
+values (19012345,'Julian','apto301','vwz902');
+
+insert into R_Propietario (IDP,Nombre,Direccion,Placa)
+values (17346123,'Jessica','apto243','feg872');
+
+insert into R_Propietario (IDP,Nombre,Direccion,Placa)
+values (12309524,'Juan','apto324','rgt732');
+
+insert into R_Propietario (IDP,Nombre,Direccion,Placa)
+values (12093482,'Camilo','apto268','fdg436');
+
+insert into R_Propietario (IDP,Nombre,Direccion,Placa)
+values (15948912,'Elian','apto298','hts589');
+
+insert into Propietario (Codigo_P,N_parqueadero,Nombre,Apellido,R_Propietario_IDP,R_huella_idHuella)
+values (0021,6,'Camilo','Vinasco',12093482,3214);
+
+insert into Propietario (Codigo_P,N_parqueadero,Nombre,Apellido,R_Propietario_IDP,R_huella_idHuella)
+values (0010,5,'Juan','Toro',12309524,4321);
+
+insert into Propietario (Codigo_P,N_parqueadero,Nombre,Apellido,R_Propietario_IDP,R_huella_idHuella)
+values (0008,2,'Elian','Godoy',15948912,3545);
+
+insert into Propietario (Codigo_P,N_parqueadero,Nombre,Apellido,R_Propietario_IDP,R_huella_idHuella)
+values (0002,1,'Jessica','Leon',17346123,5546);
+
+insert into Propietario (Codigo_P,N_parqueadero,Nombre,Apellido,R_Propietario_IDP,R_huella_idHuella)
+values (0014,8,'Julian','Perez',19012345,5978);
+
+insert into tarjeta (idTarjeta,Serial)
+values (8735,'203tp02lj8');
+
+insert into tarjeta (idTarjeta,Serial)
+values (7831,'481yx69joi');
+
+insert into tarjeta (idTarjeta,Serial)
+values (4934,'3y86u9y24m');
+
+insert into tarjeta (idTarjeta,Serial)
+values (6740,'9e5r5ti87o');
+
+insert into tarjeta (idTarjeta,Serial)
+values (5327,'e69tt87ogb');
+
+insert into visitantes (ID,Nombre,Apellido,Direccion,Placa,Tarjeta_idTarjeta)
+values (10235634,'Camila','Laures','apto119','qfw548',4934);
+
+insert into visitantes (ID,Nombre,Apellido,Direccion,Placa,Tarjeta_idTarjeta)
+values (19285956,'Debora','Niño','apto227','ejo822',5327);
+
+insert into visitantes (ID,Nombre,Apellido,Direccion,Placa,Tarjeta_idTarjeta)
+values (12797308,'Gerardo','Nieto','apto198','njs686',8735);
+
+insert into visitantes (ID,Nombre,Apellido,Direccion,Placa,Tarjeta_idTarjeta)
+values (12957872,'Elkin','Carreño','apto045','tjc868',6740);
+
+insert into visitantes (ID,Nombre,Apellido,Direccion,Placa,Tarjeta_idTarjeta)
+values (10498872,'Enrique','Rojas','apto252','awt459',7831);
+
+insert into roles (Administrador,J_Guarda,Guarda_T,Visitantes_ID,Visitantes_Tarjeta_idTarjeta,R_Propietario_IDP)
+values ('Luz','Pablo','Adrian',10498872,7831,12093482);
+
+insert into roles (Administrador,J_Guarda,Guarda_T,Visitantes_ID,Visitantes_Tarjeta_idTarjeta,R_Propietario_IDP)
+values ('Jacob','Nicolas','David',12797308,8735,15948912);
+
+insert into roles (Administrador,J_Guarda,Guarda_T,Visitantes_ID,Visitantes_Tarjeta_idTarjeta,R_Propietario_IDP)
+values ('Enzo','Silas','Marco',19285956,5327,17346123);
+
+insert into roles (Administrador,J_Guarda,Guarda_T,Visitantes_ID,Visitantes_Tarjeta_idTarjeta,R_Propietario_IDP)
+values ('Jorge','Zaid','Hipolito',12957872,6740,19012345);
+
+insert into roles (Administrador,J_Guarda,Guarda_T,Visitantes_ID,Visitantes_Tarjeta_idTarjeta,R_Propietario_IDP)
+values ('Sasha','Thiago','Alvaro',10235634,4934,12309524);
+
+insert into ActivacionT (Codigo_Act,N_Act)
+values (6879,031);
+
+insert into ActivacionT (Codigo_Act,N_Act)
+values (6462,021);
+
+insert into ActivacionT (Codigo_Act,N_Act)
+values (7425,041);
+
+insert into ActivacionT (Codigo_Act,N_Act)
+values (5768,034);
+
+insert into ActivacionT (Codigo_Act,N_Act)
+values (2068,020);
+
+insert into Tarjeta_has_ActivacionT (Tarjeta_idTarjeta,ActivacionT_Codigo_Act)
+values (4934,2068);
+
+insert into Tarjeta_has_ActivacionT (Tarjeta_idTarjeta,ActivacionT_Codigo_Act)
+values (6740,5768);
+
+insert into Tarjeta_has_ActivacionT (Tarjeta_idTarjeta,ActivacionT_Codigo_Act)
+values (8735,7425);
+
+insert into Tarjeta_has_ActivacionT (Tarjeta_idTarjeta,ActivacionT_Codigo_Act)
+values (5327,6879);
+
+insert into Tarjeta_has_ActivacionT (Tarjeta_idTarjeta,ActivacionT_Codigo_Act)
+values (7831,6462);
+
+
+select*from r_huella;
+select*from Propietario;
+select*from R_Propietario;
+select*from visitantes;
+select*from roles;
+select*from Tarjeta;
+select*from ActivacionT;
+select*from Tarjeta_has_ActivacionT;
