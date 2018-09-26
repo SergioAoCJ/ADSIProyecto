@@ -1,0 +1,118 @@
+<html>
+    <head>
+       <center><title>Autoparkin</title></center>
+        <style>
+          body{
+                background-color: #90C8FF;
+            }
+           form{
+                
+                margin: 10px auto;
+               
+                width: 450px;
+
+                height: 350px;
+
+                background: white;
+
+                border-bottom: 4px solid darkcyan;
+            
+             }
+  form label{
+
+                display: block;
+
+                color: white;
+
+                background: #1dabb8;
+
+                padding: 9px 0;
+
+                text-align: center;
+
+                font-size: 10px;
+
+                font-weight: bold;
+
+                font-family: cursive;
+
+
+            }
+            form input[type="text"],input[type="password"]{
+                
+         width: 230px;
+                
+         padding: 12px 40px;
+                 
+        font-weight: bold;
+                
+        font-family: cursive;
+                
+        margin-left: 18px;
+               
+        margin-bottom: 10px;
+               
+        border: 1px solid #1dabb8;
+                
+        text-transform: capitalize;
+                
+        -moz-transition: all 0.5s;
+            
+}
+form input[type="text"]:focus,input[type="password"]:focus{
+
+                border: 1px solid #333;
+
+                background: none;
+
+                width: 290px;
+
+                padding: 12px 10px;
+
+            }
+ form input[type="submit"]{
+
+                background:  #1dabb8;
+
+                color: white;
+
+                display: inline-block;
+
+                margin-left: 18px;
+
+                margin-bottom: 10px;
+
+                padding: 8px 20px;
+
+                border: none;
+
+                font-weight: bold;
+
+            }
+            
+form input[type="submit"]:hover{
+
+                background: darkorange;
+
+                cursor: pointer;
+
+            }
+    </style>
+    </head>
+    <body>
+        <center>
+        <div><h1>AUTOPARKIN</h1></div>
+        <form method="post"    action="Validar.jsp">
+       <br>
+       <label><h2>Inicion de Sesion</h2></label> <br>
+        <br>
+         <input type="text"  name="usuario" placeholder="Digite su usuario" required> <br>
+       <br> 
+       <br>
+       <input type="password"  name="password" placeholder="Digite su contraseña" required> <br>
+      <br>
+       <br> 
+      <input type="submit" value="enviar" name="Ingresar">
+        </center>
+    </body>
+</html>
